@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Scan des dependances
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.29.0
         with:
           scan-type: 'fs'
           scan-ref: '.'
@@ -83,7 +83,7 @@ jobs:
       - name: Charger l'image
         run: docker load -i my-image.tar
       - name: Scan de l'image
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.29.0
         with:
           image-ref: 'my-app:${{ github.sha }}'
           severity: 'CRITICAL'
