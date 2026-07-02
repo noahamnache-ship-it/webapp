@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 });
 
 // Sonde utilisee par Kubernetes (readiness / liveness)
-app.get('/health', (req, res) => res.status(200).send('OK'));
+app.get('/health', (req, res) => res.status(500).send('KO'));
 
 // On ne demarre le serveur que si le fichier est lance directement
 // (evite de bloquer les tests Jest qui importent le module).
