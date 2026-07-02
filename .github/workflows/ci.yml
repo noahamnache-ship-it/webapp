@@ -6,19 +6,17 @@ on:
   pull_request:
     branches: [ "main" ]
 
-permissions:
-  contents: read
-  security-events: write
-
 jobs:
   unit-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm install
+      - run: npm install --ignore-scripts
       - run: npm test
       - name: Sauvegarder la couverture
         uses: actions/upload-artifact@v4
@@ -29,6 +27,9 @@ jobs:
   sonar-check:
     needs: unit-test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -48,6 +49,8 @@ jobs:
 
   dependency-scan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - name: Scan des dependances
@@ -61,6 +64,8 @@ jobs:
   build-image:
     needs: [ sonar-check, dependency-scan ]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - name: Build de l'image
@@ -75,6 +80,8 @@ jobs:
   container-scan:
     needs: build-image
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/download-artifact@v4
         with:
